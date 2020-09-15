@@ -1,4 +1,4 @@
 # Table of Contents
 
-[Timing Dev Board](timing_dev_brd.md)
+* [Timing Dev Board](timing_dev_brd.md)
 
