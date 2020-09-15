@@ -5,6 +5,7 @@ relative_links:
   collections: true
 include:
   - CONTRIBUTING.md
-  - content.md
+  - index.md
+  - timing_dev_brd.md
 
 theme: jekyll-theme-slate
