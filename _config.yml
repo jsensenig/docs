@@ -6,3 +6,5 @@ relative_links:
 include:
   - CONTRIBUTING.md
   - content.md
+
+theme: jekyll-theme-slate
