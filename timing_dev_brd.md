@@ -34,3 +34,4 @@ pdtbulter mst DUNE_FMC_PRIMARY part 0 configure
 ```
 Now everything is set up and the board should be generating a 250Mhz clock and data with a valid timestamp. Below is the example output from run the 2 aforementioned pdtbutler commands,
 
+![](figs/timing_ctrl_output.png)
