@@ -75,25 +75,31 @@ def I2CSwitch(hw, ch, off=False):
 2. Read temperature monitor
 
 ``` python
-def PwrMonitor(hw):
+def TempMonitor(hw):
 
   # Select the correct I2C bus
   I2CSwitch(hw, 0)
 
-  pmons = {'5_0v' : 0xCE, '3_3v' : 0xD0, '2_5v' : 0xD2, '1_8v' : 0xD4}
-
   lI2CBusNode = hw.getNode("io.i2c")
-  for m in pmons:
-    if( not lI2CBusNode.ping( pmons[m]) ):
-      print("Could not find Power Monitor at address", pmons[m])
-      return
+  if( not lI2CBusNode.ping(0x48) ):
+    print("Could not find Temp. Monitor at address 0x48")
+    return
 
-  PwrI2C = I2CCore(hw, 10, 5, "io.i2c", None)
-  lI2CBusNode = hw.getNode("io.i2c")
+  TempI2C = I2CCore(hw, 10, 5, "io.i2c", None)
 
-  # Check all monitors are online
-  for m in pmons:
-    print(m, " Power monitor online ", lI2CBusNode.ping(pmons[m]))
+  # Select temp register and read it
+  TempI2C.write(0x48, [0x0], True)
+  temp = TempI2C.read(0x48, 2)
+
+  # TODO Add config and trip point regs
+
+  print("Temperature ", temp[1]*0.5, " or ", temp[0]*0.5, " [C]")
+
+  # Temp    D15 | D14 | D13 | D12 | D11 | D10 | D9 | D8 | D7 | D6 | D5 | D4 | D3 | D2 | D1 | D0
+  # format  MSB | b7  |  b6 |  b5 |  b4 |  b3 | b2 | b1 | LSB| X  | X  | X  | X  | X  | X | X 
+  t1 = (temp[1] << 8) + (temp[0] & 0x80) # temp = [MSB,LSB]
+  t2 = (temp[0] << 8) + (temp[1] & 0x80) # temp = [LSB,MSB]
+  print("T1, T2", t1*0.5,"'", t2*0.5)
 ```
 
 3. Read Power Monitor
