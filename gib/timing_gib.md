@@ -34,32 +34,42 @@ The I2C channels and register addresses on the GIB are,
 | SFP 6 DIAG        | 6              | 0x54    |
 
 
+The entry in the `connections.xml` file is "GIB_PRIMARY",
+``` python
+lDeviceName = "GIB_PRIMARY"
+hw = lConnectionManager.getDevice(str(lDeviceName))
+```
+
 The resets for the board are the following, in this order,
 ``` python
+# Reset the firmware
+hw.getNode('io.csr.ctrl.soft_rst').write(0x1)
+
+# De-assert the firmware reset
+ hw.getNode('io.csr.ctrl.soft_rst').write(0x1)
+ 
 # Reset I2C bus switch
-io.csr.ctrl.rst_i2c_sw.write(1)
+hw.getNode(io.csr.ctrl.i2c_sw_rst).write(1)
 
 # Reset I2C bus extender 0 and 1
-io.csr.ctrl.rst_i2c_extndr_0.write(1)
-io.csr.ctrl.rst_i2c_extndr_1.write(1)
+hw.getNode(io.csr.ctrl.i2c_exten_rst).write(1)
 
 # Reset SI5395 clock generator
-io.csr.ctrl.rst_clk_gen.write(1)
+hw.getNode(io.csr.ctrl.clk_gen_rst).write(1)
 
 # De-assert the reset
-io.csr.ctrl.rst_i2c_sw.write(0)
-io.csr.ctrl.rst_i2c_extndr_0.write(0)
-io.csr.ctrl.rst_i2c_extndr_1.write(0)
-io.csr.ctrl.rst_clk_gen.write(0)
+hw.getNode(io.csr.ctrl.rst_i2c_sw).write(0)
+hw.getNode(io.csr.ctrl.i2c_exten_rst).write(0)
+hw.getNode(io.csr.ctrl.clk_gen_rst).write(0)
 ```
 
 The components which require set up are GPS clock translator, 
 ``` python
-# Enable GPS clock translator
-io.csr.ctrl.gps_clk_en.write(1)
+# Enable GPS clock translator (active low)
+hw.getNode(io.csr.ctrl.gps_clk_en).write(0)
 
 # Set the bandwidth filters to "full bandwidth" mode, A = B = 0
-io.csr.ctrl.gps_clk_fltr_a.write(0)
-io.csr.ctrl.gps_clk_fltr_b.write(0)
+hw.getNode(io.csr.ctrl.gps_clk_fltr_a).write(0)
+hw.getNode(io.csr.ctrl.gps_clk_fltr_b).write(0)
 ```
 
