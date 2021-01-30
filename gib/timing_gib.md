@@ -34,42 +34,88 @@ The I2C channels and register addresses on the GIB are,
 | SFP 6 DIAG        | 6              | 0x54    |
 
 
-The entry in the `connections.xml` file is "GIB_PRIMARY",
+The reset and configuration of the board are in the order as follows:
+1. Resets
+   1. Firmware reset
+   2. I2C Switch, I2C Bus Extender, Clock Generator
+2. Wake Enclustra AX3 I2C switch.
+3. Configure GPS clock translator.
+4. Configure clock generator (SI5395).
+5. Enable SFPs.
+6. Select recovered clock edge on which the recovered data is captured.
+
+The entry in the `connections.xml` file is "GIB_PRIMARY", for example in python
 ``` python
 lDeviceName = "GIB_PRIMARY"
 hw = lConnectionManager.getDevice(str(lDeviceName))
 ```
 
-The resets for the board are the following, in this order,
+
+Additional functions are,
+
+1. I2C Switch Channel Select
+
 ``` python
-# Reset the firmware
-hw.getNode('io.csr.ctrl.soft_rst').write(0x1)
+def I2CSwitch(hw, ch, off=False):
 
-# De-assert the firmware reset
- hw.getNode('io.csr.ctrl.soft_rst').write(0x1)
- 
-# Reset I2C bus switch
-hw.getNode(io.csr.ctrl.i2c_sw_rst).write(1)
+  channel = (1 << ch) & 0x7F
 
-# Reset I2C bus extender 0 and 1
-hw.getNode(io.csr.ctrl.i2c_exten_rst).write(1)
+  if (off): channel = 0x0
 
-# Reset SI5395 clock generator
-hw.getNode(io.csr.ctrl.clk_gen_rst).write(1)
+  SwI2C = I2CCore(hw, 10, 5, "io.i2c", None)
 
-# De-assert the reset
-hw.getNode(io.csr.ctrl.rst_i2c_sw).write(0)
-hw.getNode(io.csr.ctrl.i2c_exten_rst).write(0)
-hw.getNode(io.csr.ctrl.clk_gen_rst).write(0)
+  # Select I2C channel 0 - 6
+  SwI2C.write(0x70, [channel], True)
+
+  print("Selected I2C channel:", ch)
+  time.sleep(0.1)
+  print( "Read switch register", hex( SwI2C.read(0x70,1)[0] ) )
 ```
 
-The components which require set up are GPS clock translator, 
-``` python
-# Enable GPS clock translator (active low)
-hw.getNode(io.csr.ctrl.gps_clk_en).write(0)
+2. Read temperature monitor
 
-# Set the bandwidth filters to "full bandwidth" mode, A = B = 0
-hw.getNode(io.csr.ctrl.gps_clk_fltr_a).write(0)
-hw.getNode(io.csr.ctrl.gps_clk_fltr_b).write(0)
+``` python
+def PwrMonitor(hw):
+
+  # Select the correct I2C bus
+  I2CSwitch(hw, 0)
+
+  pmons = {'5_0v' : 0xCE, '3_3v' : 0xD0, '2_5v' : 0xD2, '1_8v' : 0xD4}
+
+  lI2CBusNode = hw.getNode("io.i2c")
+  for m in pmons:
+    if( not lI2CBusNode.ping( pmons[m]) ):
+      print("Could not find Power Monitor at address", pmons[m])
+      return
+
+  PwrI2C = I2CCore(hw, 10, 5, "io.i2c", None)
+  lI2CBusNode = hw.getNode("io.i2c")
+
+  # Check all monitors are online
+  for m in pmons:
+    print(m, " Power monitor online ", lI2CBusNode.ping(pmons[m]))
 ```
 
+3. Read Power Monitor
+
+``` python
+def PwrMonitor(hw):
+
+  # Select the correct I2C bus
+  I2CSwitch(hw, 0)
+
+  pmons = {'5_0v' : 0xCE, '3_3v' : 0xD0, '2_5v' : 0xD2, '1_8v' : 0xD4}
+
+  lI2CBusNode = hw.getNode("io.i2c")
+  for m in pmons:
+    if( not lI2CBusNode.ping( pmons[m]) ):
+      print("Could not find Power Monitor at address", pmons[m])
+      return
+
+  PwrI2C = I2CCore(hw, 10, 5, "io.i2c", None)
+  lI2CBusNode = hw.getNode("io.i2c")
+
+  # Check all monitors are online
+  for m in pmons:
+    print(m, " Power monitor online ", lI2CBusNode.ping(pmons[m]))
+```
