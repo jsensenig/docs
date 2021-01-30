@@ -53,7 +53,7 @@ hw = lConnectionManager.getDevice(str(lDeviceName))
 
 Additional functions are,
 
-1. I2C Switch Channel Select
+* I2C Switch Channel Select
 
 ``` python
 def I2CSwitch(hw, ch, off=False):
@@ -72,10 +72,12 @@ def I2CSwitch(hw, ch, off=False):
   print( "Read switch register", hex( SwI2C.read(0x70,1)[0] ) )
 ```
 
-2. Read temperature monitor
+* Read temperature monitor
 
 ``` python
 def TempMonitor(hw):
+
+  ''' Read the LM75A temperature sensor. '''
 
   # Select the correct I2C bus
   I2CSwitch(hw, 0)
@@ -102,10 +104,12 @@ def TempMonitor(hw):
   print("T1, T2", t1*0.5,"'", t2*0.5)
 ```
 
-3. Read Power Monitor
+* Read Power Monitor
 
 ``` python
 def PwrMonitor(hw):
+
+  ''' Read the LTC2945 power monitor. '''
 
   # Select the correct I2C bus
   I2CSwitch(hw, 0)
