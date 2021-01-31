@@ -100,7 +100,7 @@ def TempMonitor(hw):
   # Temp    D15 | D14 | D13 | D12 | D11 | D10 | D9 | D8 | D7 | D6 | D5 | D4 | D3 | D2 | D1 | D0
   # format  MSB | b7  |  b6 |  b5 |  b4 |  b3 | b2 | b1 | LSB| X  | X  | X  | X  | X  | X | X 
 
-  # Assuming TempI2C.read*0x48, 2) returns a list of bytes ordered as [MSB, ..., LSB] 
+  # Assuming TempI2C.read(0x48, 2) returns a list of bytes ordered as [MSB, ..., LSB] 
   t_lsb = (temp[0] >> 7) & 0x1 # temp = [MSByte,LSByte]
   t_msB = temp[1] & 0xFF       # temp = [MSByte,LSByte]
 
