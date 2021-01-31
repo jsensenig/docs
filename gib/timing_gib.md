@@ -93,13 +93,18 @@ def TempMonitor(hw):
 
   # TODO Add config and trip point regs
 
-  print("Temperature ", temp[1]*0.5, " or ", temp[0]*0.5, " [C]")
-
+  print("Temperature byte 1 ", temp[1], " byte 0 ", temp[0])
+  
   # Temp    D15 | D14 | D13 | D12 | D11 | D10 | D9 | D8 | D7 | D6 | D5 | D4 | D3 | D2 | D1 | D0
   # format  MSB | b7  |  b6 |  b5 |  b4 |  b3 | b2 | b1 | LSB| X  | X  | X  | X  | X  | X | X 
-  t1 = (temp[1] << 8) + (temp[0] & 0x80) # temp = [MSB,LSB]
-  t2 = (temp[0] << 8) + (temp[1] & 0x80) # temp = [LSB,MSB]
-  print("T1, T2", t1*0.5,"'", t2*0.5)
+
+  # Assuming TempI2C.read*0x48, 2) returns a list of bytes ordered as [MSB, ..., LSB] 
+  t_lsb = (temp[0] >> 7) & 0x1 # temp = [MSByte,LSByte]
+  t_msB = temp[1] & 0xFF       # temp = [MSByte,LSByte]
+
+  temp_res = ( t_msB << 1 ) + t_lsb
+
+  print("Temperature = ", temp_res * 0.5) # 1b = 0.5C
 ```
 
 3. Read Power Monitor
