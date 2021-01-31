@@ -25,16 +25,16 @@ python gib_debug.py
 
 The script  will do the following:
 1. Reset
-  i.   The firmware
-  ii.  The components on the GIB
+  1. The firmware
+  2. The components on the GIB
 2. Configure 
-  i.   The GPS clock translator
-  ii.  The clock generator (SI5395)
-  iii. Enable all SFP transmit
-  iv.  Select recovered clock capture edge
+  1. The GPS clock translator
+  2. The clock generator (SI5395)
+  3. Enable all SFP transmit
+  4. Select recovered clock capture edge
 3. Status
-  i.   Read temperature
-  ii.  Read frequency counters
+  1. Read temperature
+  2. Read frequency counters
 
 If you made it to this point the GIB should be ready to generate timing
 protocol data which is syncronized to the 10MHz GPS clock. The firmware has
@@ -50,7 +50,7 @@ The master block can be synchronized to the curent time and configured with
 ```
 pdtbutler mst GIB_PRIMARY timesync
 pdtbutler mst GIB_PRIMARY part 0 configure
-``
+```
 
 The endpionts 0 and 1 can be enabled with,
 
