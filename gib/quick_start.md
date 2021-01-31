@@ -1,7 +1,7 @@
 # Quick Start Guide
 
-1. Grab the firmware [here][https://gitlab.cern.ch/protoDUNE-SP-DAQ/timing-board-firmware/-/tree/gib_debug] on the `gib_debug` branch. Requires a CERN computing account. The README in the root directory of the branch includes the directions to clone and build the firmware.
-2. The control software can be found [here][https://github.com/DUNE-DAQ/timing-board-software.git]. Instructions to compile the software are included in the repository.
+1. Grab the firmware https://gitlab.cern.ch/protoDUNE-SP-DAQ/timing-board-firmware/-/tree/gib_debug on the `gib_debug` branch. Requires a CERN computing account. The README in the root directory of the branch includes the directions to clone and build the firmware.
+2. The control software can be found https://github.com/DUNE-DAQ/timing-board-software.git. Instructions to compile the software are included in the repository.
 3. Assuming successful fimrware build and FPGA programming and compilation of
 the software, the next step is configuration. Make sure the software
 environment is set up with
@@ -25,16 +25,16 @@ python gib_debug.py
 
 The script  will do the following:
 1. Reset
-  1. The firmware
-  2. The components on the GIB
+    1. The firmware
+    2. The components on the GIB
 2. Configure 
-  1. The GPS clock translator
-  2. The clock generator (SI5395)
-  3. Enable all SFP transmit
-  4. Select recovered clock capture edge
+    1. The GPS clock translator
+    2. The clock generator (SI5395)
+    3. Enable all SFP transmit
+    4. Select recovered clock capture edge
 3. Status
-  1. Read temperature
-  2. Read frequency counters
+    1. Read temperature
+    2. Read frequency counters
 
 If you made it to this point the GIB should be ready to generate timing
 protocol data which is syncronized to the 10MHz GPS clock. The firmware has
@@ -52,13 +52,13 @@ pdtbutler mst GIB_PRIMARY timesync
 pdtbutler mst GIB_PRIMARY part 0 configure
 ```
 
-The endpionts 0 and 1 can be enabled with,
+The endpoints 0 and 1 can be enabled with,
 
 ```
 pdtbulter ep GIB_PRIMARY <endpoint #> enable
 ```
 
-The master and endpoint statu's can be monitored with
+The master and endpoint's status can be monitored with
 
 ```
 pdtbutler mst GIB_PRIMARY part 0 status
