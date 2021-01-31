@@ -1,7 +1,7 @@
 # Quick Start Guide
 
-1. Grab the firmware https://gitlab.cern.ch/protoDUNE-SP-DAQ/timing-board-firmware/-/tree/gib_debug on the `gib_debug` branch. Requires a CERN computing account. The README in the root directory of the branch includes the directions to clone and build the firmware.
-2. The control software can be found https://github.com/DUNE-DAQ/timing-board-software.git. Instructions to compile the software are included in the repository.
+1. Grab the firmware [here](https://gitlab.cern.ch/protoDUNE-SP-DAQ/timing-board-firmware/-/tree/gib_debug) on the `gib_debug` branch. Requires a CERN computing account. The README in the root directory of the branch includes the directions to clone and build the firmware.
+2. The control software can be found [here](https://github.com/DUNE-DAQ/timing-board-software.git) on the `feature/gib_debug` branch. Instructions to compile the software are included in the repository.
 3. Assuming successful fimrware build and FPGA programming and compilation of
 the software, the next step is configuration. Make sure the software
 environment is set up with
