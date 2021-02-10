@@ -17,7 +17,8 @@ sudo ifconfig <eth_adapter> up 192.168.200.1
 ping 192.168.200.16
 ```
 
-After the conection is made, a basic script can be used to reset and configure the GIB,
+After the conection is made, a basic script to reset and configure the GIB can
+be found in `tests/scripts/gib` and run with,
 
 ```
 python gib_setup.py
