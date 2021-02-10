@@ -15,11 +15,9 @@ The I2C channels and register addresses on the GIB are,
 | SI5395 Clock Gen. | 0              | 0x68    |
 | I2C Bus Extender 1| 0              | 0x74    |
 | I2C Bus Extender 2| 0              | 0x75    |
-| Power Monitor 5.0V| 0              | 0xCE    |
-| Power Monitor 5.0V| 0              | 0xCE    |
-| Power Monitor 3.3V| 0              | 0xD0    |
-| Power Monitor 2.5V| 0              | 0xD2    |
-| Power Monitor 1.8V| 0              | 0xD4    |
+| Power Monitor 5.0V| 0              | 0x67    |
+| Power Monitor 3.3V| 0              | 0x6A    |
+| Power Monitor 2.5V| 0              | 0x69    |
 | SFP 1 EEPROM      | 1              | 0x50    |
 | SFP 1 DIAG        | 1              | 0x54    |
 | SFP 2 EEPROM      | 2              | 0x50    |
